@@ -1,0 +1,134 @@
+openapi: 3.0.0
+info:
+  title: "API"
+  description: "Documentação da API"
+  version: 0.0.1
+  contact:
+    name: "Suporte equipe..."
+    email: team@contato.com
+servers:
+  - url: https://mockapi.io
+    description: Optional server description, e.g. Main (production) server
+  - url: http://staging-api.example.com
+    description: Optional server description, e.g. Internal staging server for testing
+paths:
+  /developers:
+    get:
+      tags:
+      - "Developers"
+      summary: "Retorna lista de desenvolvedores cadastrados"
+      responses:
+        200:
+          description: "Sucesso"
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  allOf:
+                    - $ref: "#/components/schemas/Id"
+                    - $ref: "#/components/schemas/Desenvolvedor"
+    post:
+      tags:
+        - "Developers"
+      summary: "Cadastra novo desenvolvedor"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Desenvolvedor"
+      responses:
+        201:
+          description: "Sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Desenvolvedor"
+                
+  /developers/{term}:
+    parameters: 
+        - name: term
+          in: path
+          schema:
+            type: string
+          required: true
+    get:
+      tags:
+      - "Developers"
+      summary: "Retorna lista de desenvolvedores filtrando pelo termo"
+      responses:
+        200:
+          description: "Sucesso"
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  allOf:
+                    - $ref: "#/components/schemas/Id"
+                    - $ref: "#/components/schemas/Desenvolvedor"
+  /developers/{id}:
+    parameters: 
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+    get:
+      tags:
+      - "Developers"
+      summary: "Retorna desenvolvedor filtrando pelo ID"
+      responses:
+        200:
+          description: "Sucesso"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Id"
+                  - $ref: "#/components/schemas/Desenvolvedor"
+    put:
+      tags:
+      - "Developers"
+      summary: "Atualiza um cadastro de desenvolvedor"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Desenvolvedor"
+      responses:
+        201:
+          description: "Sucesso"
+    delete:
+      tags:
+      - "Developers"
+      summary: "Remove um desenvolvedor cadastrado"
+      responses:
+        201:
+          description: "Sucesso"
+components:
+  schemas:
+    Id:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+    Desenvolvedor:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: "Matheus Henrique de Souza Oliveira"
+        sexo:
+          type: string
+          example: "Masculino"
+        idade: 
+          type: integer
+          example: 21
+        hobby: 
+          type: string
+          example: "Ciclista"
+        dataNascimento: 
+          format: date
+          example: 06/10/1999
